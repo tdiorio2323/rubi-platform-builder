@@ -1,0 +1,7 @@
+# CODEOWNERS (placeholder; replace with actual GitHub handle/team when pushing)
+* @project-overseer
+
+/app/* @project-overseer
+/components/* @project-overseer
+/handoff/* @project-overseer
+
