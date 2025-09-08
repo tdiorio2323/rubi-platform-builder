@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import FeatureCard from "./FeatureCard";
 
-type FeatureKey =
+export type FeatureKey =
   | "auth" | "content" | "payments" | "messaging" | "dashboard" | "mobile"
   | "subscriptions" | "ppv" | "tips" | "live" | "ai" | "nft";
 
@@ -19,6 +20,9 @@ const featureData: Record<FeatureKey, { time: number; revenue: number; title: st
   ai:{time:4,revenue:22000,title:"🤖 AI Chatbot",preview:'<div class="feature-preview"><div class="feature-preview-title">🤖 RubiBot AI</div><div class="feature-preview-desc">24/7 responses • Personalized chats • Smart replies</div></div>'},
   nft:{time:5,revenue:50000,title:"🖼️ NFT Integration",preview:'<div class="feature-preview"><div class="feature-preview-title">🖼️ NFT Collection</div><div class="feature-preview-desc">Limited edition • 0.5 ETH • Exclusive art</div></div>'},
 };
+
+const coreFeatures: FeatureKey[] = ["auth","content","payments","messaging","dashboard","mobile"];
+const monetizationFeatures: FeatureKey[] = ["subscriptions","ppv","tips","live","ai","nft"];
 
 export default function RubiPlatformBuilder() {
   const [selected, setSelected] = useState<Set<FeatureKey>>(new Set());
@@ -150,51 +154,35 @@ export default function RubiPlatformBuilder() {
       </header>
 
       <main className="max-w-6xl mx-auto px-5 grid grid-cols-1 md:grid-cols-[2fr,1fr] gap-8">
-        <section className="bg-white rounded-xl p-6 shadow-md">
+        <section className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-md">
           <h2 className="text-lg font-semibold mb-4">Core Platform Features</h2>
           <div className="grid gap-3 sm:grid-cols-2">
-            {(["auth","content","payments","messaging","dashboard","mobile"] as FeatureKey[]).map((k) => (
-              <button
+            {coreFeatures.map((k) => (
+              <FeatureCard
                 key={k}
-                onClick={() => toggle(k)}
-                className={`text-left rounded-xl p-4 border transition shadow-sm relative ${selected.has(k) ? "border-pink-500/80 bg-pink-400/60 text-white" : "border-pink-200/60 bg-pink-200/30 hover:bg-pink-200/40"}`}
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold">{featureData[k].title}</h3>
-                    <p className={`text-xs ${selected.has(k) ? "text-white/90" : "text-pink-400"}`}>Click to toggle</p>
-                  </div>
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center border ${selected.has(k) ? "border-pink-600 bg-pink-300/40" : "border-pink-300 bg-pink-200/40"}`}>
-                    {selected.has(k) ? "✓" : ""}
-                  </div>
-                </div>
-              </button>
+                featureKey={k}
+                selected={selected.has(k)}
+                toggle={toggle}
+                title={featureData[k].title}
+              />
             ))}
           </div>
 
           <h2 className="text-lg font-semibold mt-8 mb-4">Monetization Features</h2>
           <div className="grid gap-3 sm:grid-cols-2">
-            {(["subscriptions","ppv","tips","live","ai","nft"] as FeatureKey[]).map((k) => (
-              <button
+            {monetizationFeatures.map((k) => (
+              <FeatureCard
                 key={k}
-                onClick={() => toggle(k)}
-                className={`text-left rounded-xl p-4 border transition shadow-sm relative ${selected.has(k) ? "border-pink-500/80 bg-pink-400/60 text-white" : "border-pink-200/60 bg-pink-200/30 hover:bg-pink-200/40"}`}
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold">{featureData[k].title}</h3>
-                    <p className={`text-xs ${selected.has(k) ? "text-white/90" : "text-pink-400"}`}>Click to toggle</p>
-                  </div>
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center border ${selected.has(k) ? "border-pink-600 bg-pink-300/40" : "border-pink-300 bg-pink-200/40"}`}>
-                    {selected.has(k) ? "✓" : ""}
-                  </div>
-                </div>
-              </button>
+                featureKey={k}
+                selected={selected.has(k)}
+                toggle={toggle}
+                title={featureData[k].title}
+              />
             ))}
           </div>
         </section>
 
-        <aside className="rounded-2xl p-6 border border-pink-200/30 bg-pink-100/40 backdrop-blur-xl h-fit sticky top-5 shadow-md">
+        <aside className="rounded-2xl p-6 border border-white/20 bg-white/10 backdrop-blur-xl h-fit sticky top-5 shadow-md">
           <h3 className="text-base font-semibold text-pink-600 mb-4">Live Preview</h3>
           <div className="rounded-lg p-5 h-96 overflow-y-auto mb-4" style={{background:"linear-gradient(135deg, #667eea 0%, #764ba2 100%)"}}>
             <div className="prose-sm text-white" dangerouslySetInnerHTML={{ __html: previewHTML }} />
